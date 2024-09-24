@@ -1,6 +1,7 @@
 # agisit24-g26
 
 Anna Svendsen
+Nora Mosand Viken
 
 ## Getting started
 
