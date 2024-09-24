@@ -1,6 +1,6 @@
 # agisit24-g26
 
-
+Anna Svendsen
 
 ## Getting started
 
