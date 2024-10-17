@@ -9,7 +9,7 @@ router.get('/restaurants', (req, res) => {
 
 router.post('/restaurants', (req, res) => {
     const newRestaurant = req.body;
-    restaurants.push(newRestaurant); // Add the new restaurant to the array
+    restaurants.push(newRestaurant); // Add the new restaurant to the mockdata
     res.json(restaurants); // Respond with the updated list of restaurants
 });
 
