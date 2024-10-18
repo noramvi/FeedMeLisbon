@@ -26,34 +26,31 @@
         </div>
     </section>
 
-    <!-- Add Restaurant Button -->
-    <button id="add-restaurant-btn">Add restaurant</button>
-
-    <!-- Modal Structure -->
-    <div id="add-restaurant-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Add New Restaurant</h2>
-            <form id="add-restaurant-form">
-                <label for="restaurant-name">Name:</label>
-                <input type="text" id="restaurant-name" required>
-            
-                <label for="restaurant-location">Location:</label>
-                <input type="text" id="restaurant-location" required>
-            
-                <label for="restaurant-type">Type</label>
-                <input type="text" id="restaurant-type" required>
-                <!-- <select id="restaurant-type" required>
-                    <option value="">Select</option>
-                    <option value="Breakfast">Breakfast</option>
-                    <option value="Lunch">Lunch</option>
-                    <option value="Dinner">Dinner</option>
-                    <option value="Dessert">Dessert</option>
-                </select> -->
-                <button id="add-restaurant-btn2" type="submit">Add Restaurant</button>
-            </form>
-        </div>
+    <div id="add-restaurant-container">
+        <button id="add-restaurant-btn">Add restaurant</button>
     </div>
+
+<!-- Modal Structure -->
+<div id="add-restaurant-modal" class="modal">
+    <div class="modal-content">
+        <span id="close-btn" class="close-btn">&times;</span>
+        <h2>Add new restaurant</h2>
+        <form id="add-restaurant-form">
+            <label for="restaurant-name">Name:</label>
+            <input type="text" id="restaurant-name" required>
+        
+            <label for="restaurant-location">Location:</label>
+            <input type="text" id="restaurant-location" required>
+        
+            <label for="restaurant-type">Type</label>
+            <input type="text" id="restaurant-type" required>
+            <div class="modal-button-container">
+                <button id="add-restaurant-btn2" type="submit">Add Restaurant</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
     <script src="app.js"></script>
 </body>

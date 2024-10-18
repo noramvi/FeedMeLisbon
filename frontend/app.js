@@ -6,19 +6,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Loop through the restaurants and create restaurant cards
         restaurants.forEach(restaurant => {
-            console.log(restaurant);
+            console.log(restaurant); // Log restaurant object for debugging
             const restaurantCard = `
                 <div class="restaurant-card">
                     <h3>${restaurant.Name}</h3>
                     <div class="location-container">
-                        <img src="img/map pin.png" class="location-image">
+                        <img src="img/map pin.png" class="location-image" alt="Map Pin">
                         <span>${restaurant.Location}</span>
                     </div>
+                    <div class="rating-container">
+                    <!-- Placeholder for average rating -->
+                    <span>Rating: N/A</span>
+                </div>
                 </div>
             `;
             container.innerHTML += restaurantCard;
+
+            // Fetch the average rating for this restaurant
+            fetchAverageRating(restaurant.Name);
         });
     }
+
+    // Function to fetch average rating for a specific restaurant
+async function fetchAverageRating(restaurantName) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/average-rating/${restaurantName}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(`Average Rating for ${data.restaurant}: ${data.averageRating}`);
+
+        // Update the UI with the average rating
+        const restaurantCards = document.querySelectorAll('.restaurant-card');
+        restaurantCards.forEach(card => {
+            const titleElement = card.querySelector('h3');
+            if (titleElement && titleElement.textContent === restaurantName) {
+                const ratingElement = card.querySelector('.rating-container span');
+                ratingElement.innerHTML = `Rating: ${data.averageRating}`;
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching average rating:', error);
+    }
+}
 
     // Function to reset all buttons' active state
     function resetButtonActiveState() {
@@ -52,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Error fetching breakfast data:', err));
     });
 
-    // Fetch brunch restaurants when the "Brunch" button is clicked
+    // Fetch lunch restaurants when the "Brunch" button is clicked
     document.getElementById('lunch-btn').addEventListener('click', () => {
         fetch('http://localhost:3000/api/lunch')
             .then(response => response.json())
@@ -88,55 +119,71 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Error fetching dessert data:', err));
     });
 
-    // Function to open the modal
+    // Open the modal
     document.getElementById('add-restaurant-btn').addEventListener('click', () => {
         document.getElementById('add-restaurant-modal').style.display = 'block';
     });
 
-    // Function to close the modal
+    // Close the modal when the close button is clicked
     document.getElementById('close-btn').addEventListener('click', () => {
-        document.getElementById('add-restaurant-modal').style.display = 'none';
+        closeModal();
     });
+
+    // Close the modal when clicking outside of the modal content
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('add-restaurant-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Function to close the modal
+    function closeModal() {
+        document.getElementById('add-restaurant-modal').style.display = 'none';
+    }
 
     // Function to handle form submission
-    document.getElementById('add-restaurant-form').addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent the default form submission
+    const form = document.getElementById('add-restaurant-form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent the default form submission
 
-        // Get the values from the form
-        const name = document.getElementById('restaurant-name').value;
-        const location = document.getElementById('restaurant-location').value;
-        const type = document.getElementById('restaurant-type').value;
+            // Get the values from the form
+            const name = document.getElementById('restaurant-name').value;
+            const location = document.getElementById('restaurant-location').value;
+            const type = document.getElementById('restaurant-type').value;
 
-        // Make a POST request to your backend to add the restaurant
-        fetch('http://localhost:3000/api/restaurants', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                Name: name,
-                Location: location,
-                Type: type
+            // Make a POST request to your backend to add the restaurant
+            fetch('http://localhost:3000/api/restaurants', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Name: name,
+                    Location: location,
+                    Type: type
+                })
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-            // Close the modal and reset the form
-            document.getElementById('add-restaurant-modal').style.display = 'none';
-            document.getElementById('add-restaurant-form').reset();
-            // Optionally, refresh the restaurant list here
-            fetchAllRestaurants();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                closeModal(); // Close the modal
+                form.reset(); // Reset the form
+                fetchAllRestaurants(); // Optionally refresh the restaurant list
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         });
-    });
+    } else {
+        console.error('add-restaurant-form not found');
+    }
 
     // Function to fetch all restaurants (if you want to refresh the list)
     function fetchAllRestaurants() {
