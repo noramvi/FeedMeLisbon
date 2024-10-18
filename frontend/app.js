@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Loop through the restaurants and create restaurant cards
         restaurants.forEach(restaurant => {
+            console.log(restaurant);
             const restaurantCard = `
                 <div class="restaurant-card">
-                    <h3>${restaurant.name}</h3>
+                    <h3>${restaurant.Name}</h3>
                     <div class="location-container">
                         <img src="img/map pin.png" class="location-image">
-                        <span>${restaurant.location}</span>
+                        <span>${restaurant.Location}</span>
                     </div>
-                    <p>Rating: ${restaurant.rating}</p>
                 </div>
             `;
             container.innerHTML += restaurantCard;
@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Fetch brunch restaurants when the "Brunch" button is clicked
-    document.getElementById('brunch-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/brunch')
+    document.getElementById('lunch-btn').addEventListener('click', () => {
+        fetch('http://localhost:3000/api/lunch')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
                 resetButtonActiveState();
-                document.getElementById('brunch-btn').classList.add('active');
+                document.getElementById('lunch-btn').classList.add('active');
             })
             .catch(err => console.error('Error fetching brunch data:', err));
     });
@@ -106,9 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = document.getElementById('restaurant-name').value;
         const location = document.getElementById('restaurant-location').value;
         const type = document.getElementById('restaurant-type').value;
-        const rating = document.getElementById('restaurant-rating').value;
-
-        console.log(`Name: ${name}, Location: ${location}, Type: ${type}, Rating: ${rating}`); // Sjekk verdiene
 
         // Make a POST request to your backend to add the restaurant
         fetch('http://localhost:3000/api/restaurants', {
@@ -117,10 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name,
-                location,
-                type,
-                rating
+                Name: name,
+                Location: location,
+                Type: type
             })
         })
         .then(response => {
@@ -132,9 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             console.log('Success:', data);
             // Close the modal and reset the form
-            document.getElementById('addRestaurantModal').style.display = 'none';
+            document.getElementById('add-restaurant-modal').style.display = 'none';
             document.getElementById('add-restaurant-form').reset();
-            // Optionally, you can refresh the restaurant list here
+            // Optionally, refresh the restaurant list here
             fetchAllRestaurants();
         })
         .catch((error) => {
