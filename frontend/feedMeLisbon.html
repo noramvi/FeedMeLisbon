@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>feedMeLisbon</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Feed Me Lisbon</h1>
+        <p>Find the best restaurants in Lisbon for your next meal!</p>
+    </header>
+
+    <section id="meal-selection">
+        <button id="all-btn">All</button>
+        <button id="breakfast-btn"><img src="img/breakfast.jpg" alt="Breakfast.jpg" class="button-image">Breakfast</button>
+        <button id="lunch-btn"><img src="img/brunch.jpg" alt="Brunch.jpg" class="button-image">Brunch</button>
+        <button id="dinner-btn"><img src="img/dinner.jpg" alt="Dinner" class="button-image">Dinner</button>
+        <button id="dessert-btn"><img src="img/dessert.jpg" alt="Dessert.jpg" class="button-image">Dessert</button>
+    </section>
+
+    <section id="restaurants">
+        <div id="restaurants-container">
+            <!-- Restaurants will be displayed here -->
+        </div>
+    </section>
+
+    <!-- Add Restaurant Button -->
+    <button id="add-restaurant-btn">Add restaurant</button>
+
+    <!-- Modal Structure -->
+    <div id="add-restaurant-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Add New Restaurant</h2>
+            <form id="add-restaurant-form">
+                <label for="restaurant-name">Name:</label>
+                <input type="text" id="restaurant-name" required>
+            
+                <label for="restaurant-location">Location:</label>
+                <input type="text" id="restaurant-location" required>
+            
+                <label for="restaurant-type">Type</label>
+                <input type="text" id="restaurant-type" required>
+                <!-- <select id="restaurant-type" required>
+                    <option value="">Select</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Dessert">Dessert</option>
+                </select> -->
+                <button id="add-restaurant-btn2" type="submit">Add Restaurant</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
