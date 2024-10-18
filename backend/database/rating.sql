@@ -21,9 +21,3 @@ INSERT INTO Rating(RatingID, RatingValue, RestaurantID)
 
 INSERT INTO Rating(RatingID, RatingValue, RestaurantID)
     VALUES(8, 1, 2)
-
-INSERT INTO Restaurant(RestaurantID, Name, Location, Type)
-    VALUEs(1, "restaurantOne", "here", "Breakfast")
-
-INSERT INTO Restaurant(RestaurantID, Name, Location, Type)
-    VALUEs(2, "restaurantTwo", "here", "Breakfast")

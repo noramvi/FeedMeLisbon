@@ -50,7 +50,31 @@
         </form>
     </div>
 </div>
-
+<!-- Rating Modal -->
+<div id="rating-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span id="close-rating-modal" class="close-button">&times;</span>
+        <h2>Rate the restaurant</h2>
+        <form id="rating-form">
+            <label for="rating-value">Rating:</label>
+            <select id="rating-value" name="rating-value" required>
+                <option value="" disabled selected>Select a rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <input type="hidden" id="restaurant-name" name="restaurant-name">
+            <button id="rate-btn2"type="submit">Rate</button>
+        </form>
+    </div>
+</div>
 
     <script src="app.js"></script>
 </body>

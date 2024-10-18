@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${restaurant.Location}</span>
                     </div>
                     <div class="rating-container">
-                    <!-- Placeholder for average rating -->
-                    <span>Rating: N/A</span>
-                </div>
+                        <span id="avg-rating-${restaurant.Name}">Rating: Loading...</span>
+                    </div>
+                    <button class="rate-btn" data-restaurant="${restaurant.Name}">Rate</button>
                 </div>
             `;
             container.innerHTML += restaurantCard;
@@ -28,28 +28,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to fetch average rating for a specific restaurant
-async function fetchAverageRating(restaurantName) {
-    try {
-        const response = await fetch(`http://localhost:3000/api/average-rating/${restaurantName}`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log(`Average Rating for ${data.restaurant}: ${data.averageRating}`);
-
-        // Update the UI with the average rating
-        const restaurantCards = document.querySelectorAll('.restaurant-card');
-        restaurantCards.forEach(card => {
-            const titleElement = card.querySelector('h3');
-            if (titleElement && titleElement.textContent === restaurantName) {
-                const ratingElement = card.querySelector('.rating-container span');
-                ratingElement.innerHTML = `Rating: ${data.averageRating}`;
+    async function fetchAverageRating(restaurantName) {
+        try {
+            const response = await fetch(`http://localhost:3001/api/ratings/average/${restaurantName}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        });
-    } catch (error) {
-        console.error('Error fetching average rating:', error);
+            const data = await response.json();
+            console.log(`Average Rating for ${data.restaurant}: ${data.averageRating}`);
+
+            // Update the UI with the average rating
+            const ratingElement = document.getElementById(`avg-rating-${restaurantName}`);
+            if (ratingElement) {
+                ratingElement.innerHTML = `Rating: ${data.averageRating.toFixed(1)}`; // Display with one decimal
+            }
+        } catch (error) {
+            console.error('Error fetching average rating:', error);
+        }
     }
-}
+
+    async function handleAddRating(restaurantName) {
+        const ratingValue = prompt(`Enter your rating for ${restaurantName} (1-10):`);
+        
+        if (ratingValue && !isNaN(ratingValue) && ratingValue >= 1 && ratingValue <= 10) {
+            try {
+                const response = await fetch('http://localhost:3001/api/ratings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ restaurantName, ratingValue: Number(ratingValue) })
+                });
+                
+                if (!response.ok) throw new Error('Failed to add rating');
+    
+                alert('Rating added successfully!');
+                await fetchAverageRating(restaurantName); // Refresh the average rating display
+    
+            } catch (error) {
+                console.error('Error adding rating:', error);
+            }
+        } else {
+            alert('Please enter a valid rating between 1 and 10.');
+        }
+    }
 
     // Function to reset all buttons' active state
     function resetButtonActiveState() {
@@ -119,7 +141,7 @@ async function fetchAverageRating(restaurantName) {
             .catch(err => console.error('Error fetching dessert data:', err));
     });
 
-    // Open the modal
+    // Open the modal for adding a new restaurant
     document.getElementById('add-restaurant-btn').addEventListener('click', () => {
         document.getElementById('add-restaurant-modal').style.display = 'block';
     });
@@ -127,7 +149,7 @@ async function fetchAverageRating(restaurantName) {
     // Close the modal when the close button is clicked
     document.getElementById('close-btn').addEventListener('click', () => {
         closeModal();
-    });
+    });    
 
     // Close the modal when clicking outside of the modal content
     window.addEventListener('click', (event) => {
@@ -142,7 +164,7 @@ async function fetchAverageRating(restaurantName) {
         document.getElementById('add-restaurant-modal').style.display = 'none';
     }
 
-    // Function to handle form submission
+    // Function to handle restaurant form submission
     const form = document.getElementById('add-restaurant-form');
     if (form) {
         form.addEventListener('submit', (e) => {
@@ -185,11 +207,70 @@ async function fetchAverageRating(restaurantName) {
         console.error('add-restaurant-form not found');
     }
 
-    // Function to fetch all restaurants (if you want to refresh the list)
-    function fetchAllRestaurants() {
-        fetch('http://localhost:3000/api/restaurants')
-            .then(response => response.json())
-            .then(data => displayRestaurants(data))
-            .catch(err => console.error('Error fetching all restaurants:', err));
+    // Function to open the rating modal
+// Function to open the rating modal
+function openRatingModal(restaurantName) {
+    document.getElementById('restaurant-name').value = restaurantName; // Set restaurant name in hidden input
+    document.getElementById('rating-modal').style.display = 'block'; // Show modal
+}
+
+// Function to close the rating modal
+function closeRatingModal() {
+    document.getElementById('rating-modal').style.display = 'none'; // Hide modal
+}
+
+// Close the modal when clicking outside of the modal content
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('rating-modal');
+    if (event.target === modal) {
+        closeRatingModal();
     }
+});
+
+// Close the modal when the close button (X) is clicked
+document.getElementById('close-rating-modal').addEventListener('click', closeRatingModal);
+
+// Event listener for the rating form submission
+document.getElementById('rating-form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const restaurantName = document.getElementById('restaurant-name').value; // Get the restaurant name
+    const ratingValue = document.getElementById('rating-value').value; // Get the selected rating
+
+    try {
+        const response = await fetch('http://localhost:3001/api/ratings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ restaurantName, ratingValue }), // Send restaurant name and rating
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data.message); // Log success message
+        closeRatingModal(); // Close the modal after submission
+    } catch (error) {
+        console.error('Error adding rating:', error);
+    }
+});
+
+// Example of how to open the modal from the restaurant card
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('rate-btn')) {
+        const restaurantName = event.target.getAttribute('data-restaurant');
+        openRatingModal(restaurantName); // Open modal with restaurant name
+    }
+});
+
+// Function to fetch all restaurants (if you want to refresh the list)
+function fetchAllRestaurants() {
+    fetch('http://localhost:3000/api/restaurants')
+        .then(response => response.json())
+        .then(data => displayRestaurants(data))
+        .catch(err => console.error('Error fetching all restaurants:', err));
+}
 });
