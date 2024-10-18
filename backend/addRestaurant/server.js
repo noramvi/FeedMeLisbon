@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const app = express();
 const port = 3000;
-const { calculateAverage } = require('./backend/ratings');
+// const { calculateAverage } = require('./backend/addRating/ratings');
 
 // Middleware for å parse JSON
 app.use(express.json());
