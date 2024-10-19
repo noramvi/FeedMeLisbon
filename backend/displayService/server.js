@@ -11,7 +11,6 @@ const port = 3002;
 app.use(cors());
 app.use(express.json());
 
-// Bruk restaurant-rutene
 app.use('/api', displayRoutes);
 
 // Start serveren

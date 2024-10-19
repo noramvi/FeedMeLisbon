@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const restaurantController = require('../controllers/displayController');
+const displayController = require('../controllers/displayController');
 
-router.get('/restaurants', restaurantController.getAllRestaurants); 
-router.get('/breakfast', restaurantController.getBreakfastRestaurants);
-router.get('/lunch', restaurantController.getLunchRestaurants);
-router.get('/dinner', restaurantController.getDinnerRestaurants);
-router.get('/dessert', restaurantController.getDessertRestaurants);
+router.get('/restaurants', displayController.getAllRestaurants); 
+router.get('/breakfast', displayController.getBreakfastRestaurants);
+router.get('/lunch', displayController.getLunchRestaurants);
+router.get('/dinner', displayController.getDinnerRestaurants);
+router.get('/dessert', displayController.getDessertRestaurants);
 
 module.exports = router;

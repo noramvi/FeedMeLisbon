@@ -1,4 +1,4 @@
-const pool = require('../config/db'); // Anta at du har en db-fil for MySQL-tilkoblingen
+const pool = require('../config/db'); 
 
 // Add a new restaurant
 const addNewRestaurant = async (req, res) => {
