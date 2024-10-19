@@ -147,22 +147,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Close the modal when the close button is clicked
-    document.getElementById('close-btn').addEventListener('click', () => {
+document.getElementById('close-btn').addEventListener('click', () => {
+    closeModal();
+});    
+
+// Close the modal when clicking outside of the modal content
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('add-restaurant-modal');
+    if (event.target === modal) {
         closeModal();
-    });    
-
-    // Close the modal when clicking outside of the modal content
-    window.addEventListener('click', (event) => {
-        const modal = document.getElementById('add-restaurant-modal');
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Function to close the modal
-    function closeModal() {
-        document.getElementById('add-restaurant-modal').style.display = 'none';
     }
+});
+
+// Function to close the modal
+function closeModal() {
+    document.getElementById('add-restaurant-modal').style.display = 'none';
+}
+
 
     // Function to handle restaurant form submission
     const form = document.getElementById('add-restaurant-form');
@@ -207,17 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('add-restaurant-form not found');
     }
 
-    // Function to open the rating modal
 // Function to open the rating modal
 function openRatingModal(restaurantName) {
-    document.getElementById('restaurant-name').value = restaurantName; // Set restaurant name in hidden input
+    document.getElementById('restaurant-name2').value = restaurantName; // Set restaurant name in hidden input
     document.getElementById('rating-modal').style.display = 'block'; // Show modal
 }
 
-// Function to close the rating modal
-function closeRatingModal() {
-    document.getElementById('rating-modal').style.display = 'none'; // Hide modal
-}
+// Close the rating modal when the close button (X) is clicked
+document.getElementById('close-rating-modal').addEventListener('click', closeRatingModal);
 
 // Close the modal when clicking outside of the modal content
 window.addEventListener('click', (event) => {
@@ -227,14 +225,17 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// Close the modal when the close button (X) is clicked
-document.getElementById('close-rating-modal').addEventListener('click', closeRatingModal);
+// Function to close the rating modal
+function closeRatingModal() {
+    document.getElementById('rating-modal').style.display = 'none'; // Hide modal
+}
+
 
 // Event listener for the rating form submission
 document.getElementById('rating-form').addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent the default form submission
 
-    const restaurantName = document.getElementById('restaurant-name').value; // Get the restaurant name
+    const restaurantName = document.getElementById('restaurant-name2').value; // Get the restaurant name
     const ratingValue = document.getElementById('rating-value').value; // Get the selected rating
 
     try {
