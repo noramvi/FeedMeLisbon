@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${restaurant.Location}</span>
                     </div>
                     <div class="rating-container">
-                        <span id="avg-rating-${restaurant.Name}">Rating: Loading...</span>
+                        <span id="avg-rating-${restaurant.Name}">Rating: </span>
                     </div>
                     <button class="rate-btn" data-restaurant="${restaurant.Name}">Rate</button>
                 </div>
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch all restaurants when the "Show All Restaurants" button is clicked
     document.getElementById('all-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/restaurants')
+        fetch('http://localhost:3002/api/restaurants')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch breakfast restaurants when the "Breakfast" button is clicked
     document.getElementById('breakfast-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/breakfast')
+        fetch('http://localhost:3002/api/breakfast')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch lunch restaurants when the "Brunch" button is clicked
     document.getElementById('lunch-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/lunch')
+        fetch('http://localhost:3002/api/lunch')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dinner restaurants when the "Dinner" button is clicked
     document.getElementById('dinner-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/dinner')
+        fetch('http://localhost:3002/api/dinner')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dessert restaurants when the "Dessert" button is clicked
     document.getElementById('dessert-btn').addEventListener('click', () => {
-        fetch('http://localhost:3000/api/dessert')
+        fetch('http://localhost:3002/api/dessert')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -209,6 +209,7 @@ function closeModal() {
     }
 
 // Function to open the rating modal
+// Function to open the rating modal
 function openRatingModal(restaurantName) {
     document.getElementById('restaurant-name2').value = restaurantName; // Set restaurant name in hidden input
     document.getElementById('rating-modal').style.display = 'block'; // Show modal
@@ -230,13 +231,18 @@ function closeRatingModal() {
     document.getElementById('rating-modal').style.display = 'none'; // Hide modal
 }
 
-
 // Event listener for the rating form submission
 document.getElementById('rating-form').addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent the default form submission
 
     const restaurantName = document.getElementById('restaurant-name2').value; // Get the restaurant name
-    const ratingValue = document.getElementById('rating-value').value; // Get the selected rating
+    const ratingValue = Number(document.getElementById('rating-value').value); // Get the selected rating value
+
+    // Validate rating value
+    if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 10) {
+        alert('Please enter a valid rating between 1 and 10.');
+        return; // Exit if the rating is invalid
+    }
 
     try {
         const response = await fetch('http://localhost:3001/api/ratings', {
@@ -254,10 +260,21 @@ document.getElementById('rating-form').addEventListener('submit', async (event) 
         const data = await response.json();
         console.log(data.message); // Log success message
         closeRatingModal(); // Close the modal after submission
+        await fetchAverageRating(restaurantName); // Refresh the average rating display
     } catch (error) {
         console.error('Error adding rating:', error);
     }
 });
+
+// Example usage of opening the modal (make sure this is linked to your restaurant cards)
+document.querySelectorAll('.rate-button').forEach(button => {
+    button.addEventListener('click', () => {
+        const restaurantName = button.getAttribute('data-restaurant-name');
+        openRatingModal(restaurantName);
+    });
+});
+
+
 
 // Example of how to open the modal from the restaurant card
 document.addEventListener('click', (event) => {
@@ -269,7 +286,7 @@ document.addEventListener('click', (event) => {
 
 // Function to fetch all restaurants (if you want to refresh the list)
 function fetchAllRestaurants() {
-    fetch('http://localhost:3000/api/restaurants')
+    fetch('http://localhost:3002/api/restaurants')
         .then(response => response.json())
         .then(data => displayRestaurants(data))
         .catch(err => console.error('Error fetching all restaurants:', err));
