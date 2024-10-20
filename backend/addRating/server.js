@@ -8,7 +8,11 @@ const PORT = 3001;
 const path = require('path')
 const app = express();
 // Use CORS middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3003', 
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(express.json());
 
 app.use(bodyParser.json()); // Middleware to parse JSON bodies

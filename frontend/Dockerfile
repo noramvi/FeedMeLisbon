@@ -9,6 +9,7 @@ COPY package-lock.json ./
 COPY package.json ./
 
 # Step 4: Install project dependencies
+
 RUN npm install --production
 
 # Step 5: Copy the rest of the application code
@@ -24,6 +25,7 @@ WORKDIR /app
 COPY --from=build /app .
 
 # Step 9: Install a simple HTTP server (e.g., `serve`)
+RUN apk add --no-cache curl
 RUN npm install -g serve
 
 # Step 10: Expose the port the server will run on

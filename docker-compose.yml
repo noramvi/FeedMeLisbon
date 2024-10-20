@@ -25,7 +25,7 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: password
+      DB_PASS: Noramviken123
     ports:
       - "3000:3000"
     depends_on:
@@ -42,7 +42,7 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: password
+      DB_PASS: Noramviken123
     ports:
       - "3001:3001"
     depends_on:
@@ -59,7 +59,7 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: password
+      DB_PASS: Noramviken123
     ports:
       - "3002:3002"
     depends_on:
@@ -70,7 +70,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./Dockerfile  # Path to the Dockerfile for frontend
+      dockerfile: Dockerfile  # Path to the Dockerfile for frontend
     container_name: frontendContainer
     ports:
       - "3003:3003"  # Maps port 3003 on the host to port 80 in the container
