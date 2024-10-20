@@ -6,10 +6,6 @@ WORKDIR /app
 
 # To copy package.json and package-lock.json
 COPY package*.json ./
-#COPY displayService/server.js ./
-#COPY routes/displayRoutes.js ./routes/
-#COPY controllers/displayController.js ./controllers/
-#COPY config/db.js ./config/
 
 # To install dependencies
 RUN npm install

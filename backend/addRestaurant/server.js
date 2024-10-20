@@ -16,7 +16,7 @@ app.use(express.json());
 app.use('/api', restaurantRoutes);
 app.use(express.static(path.join(__dirname, 'frontend')))
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'index.html')); // Adjust this path as needed
 });
 

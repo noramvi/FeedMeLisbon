@@ -70,27 +70,6 @@ module.exports = {
     addNewRating,
 };
 
-// Example usage
-async function main() {
-    const restaurantName = 'RestaurantTwo'; // Replace with actual restaurant name
-    const ratingValue = 4;
-
-    try {
-        // Directly use the pool instead of creating a new connection
-        await addNewRating(restaurantName, ratingValue);
-        const averageRating = await calculateAverage(restaurantName);
-        console.log(`Average Rating for ${restaurantName}:`, averageRating.toFixed(1));
-    } catch (error) {
-        console.error('Error in main function:', error);
-    }
-}
-
-
-module.exports = {
-    calculateAverage,
-    addNewRating,
-};
-
 
 
 // // Example usage

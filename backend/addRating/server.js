@@ -15,12 +15,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use(bodyParser.json()); // Middleware to parse JSON bodies
-
 app.use('/api', ratingRoutes); // Mount your rating routes
 app.use(express.static(path.join(__dirname, 'frontend')))
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'index.html')); // Adjust this path as needed
 });
 app.listen(PORT, () => {
