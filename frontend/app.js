@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch average rating for a specific restaurant
     async function fetchAverageRating(restaurantName) {
         try {
-            const response = await fetch(`http://localhost:3001/api/ratings/average/${restaurantName}`);
+            const response = await fetch(`http://addrating:3001/api/ratings/average/${restaurantName}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (ratingValue && !isNaN(ratingValue) && ratingValue >= 1 && ratingValue <= 10) {
             try {
-                const response = await fetch('http://localhost:3001/api/ratings', {
+                const response = await fetch('http://addrating:3001/api/ratings', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch all restaurants when the "Show All Restaurants" button is clicked
     document.getElementById('all-btn').addEventListener('click', () => {
-        fetch('http://localhost:3002/api/restaurants')
+        fetch('http://displayservice:3002/api/restaurants')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch breakfast restaurants when the "Breakfast" button is clicked
     document.getElementById('breakfast-btn').addEventListener('click', () => {
-        fetch('http://localhost:3002/api/breakfast')
+        fetch('http://displayservice:3002/api/breakfast')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch lunch restaurants when the "Brunch" button is clicked
     document.getElementById('lunch-btn').addEventListener('click', () => {
-        fetch('http://localhost:3002/api/lunch')
+        fetch('http://displayservice:3002/api/lunch')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dinner restaurants when the "Dinner" button is clicked
     document.getElementById('dinner-btn').addEventListener('click', () => {
-        fetch('http://localhost:3002/api/dinner')
+        fetch('http://displayservice:3002/api/dinner')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dessert restaurants when the "Dessert" button is clicked
     document.getElementById('dessert-btn').addEventListener('click', () => {
-        fetch('http://localhost:3002/api/dessert')
+        fetch('http://displayservice:3002/api/dessert')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -177,7 +177,7 @@ function closeModal() {
             const type = document.getElementById('restaurant-type').value;
 
             // Make a POST request to your backend to add the restaurant
-            fetch('http://localhost:3000/api/restaurants', {
+            fetch('http://addrestaurant:3000/api/restaurants', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -245,7 +245,7 @@ document.getElementById('rating-form').addEventListener('submit', async (event) 
     }
 
     try {
-        const response = await fetch('http://localhost:3001/api/ratings', {
+        const response = await fetch('http://addrating:3001/api/ratings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -286,7 +286,7 @@ document.addEventListener('click', (event) => {
 
 // Function to fetch all restaurants (if you want to refresh the list)
 function fetchAllRestaurants() {
-    fetch('http://localhost:3002/api/restaurants')
+    fetch('http://displayservice:3002/api/restaurants')
         .then(response => response.json())
         .then(data => displayRestaurants(data))
         .catch(err => console.error('Error fetching all restaurants:', err));

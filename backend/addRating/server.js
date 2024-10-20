@@ -3,20 +3,22 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const ratingRoutes = require('./routes/ratingRoutes'); // Adjust path as necessary
 
-const app = express();
-const PORT = 3001;
 
+const PORT = 3001;
+const path = require('path')
+const app = express();
 // Use CORS middleware
-app.use(cors({
-    origin: 'http://127.0.0.1:8080', // Allow requests from your frontend origin
-    methods: ['GET', 'POST'], // Specify allowed methods
-    credentials: true // Allow credentials if needed (for cookies, authorization headers, etc.)
-}));
+app.use(cors());
+app.use(express.json());
 
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
 app.use('/api', ratingRoutes); // Mount your rating routes
+app.use(express.static(path.join(__dirname, 'frontend')))
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html')); // Adjust this path as needed
+});
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
