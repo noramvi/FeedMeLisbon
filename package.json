@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1"
+    "agisit24-g26": "file:",
+    "express": "^4.21.1",
+    "livereload": "^0.9.3"
   }
 }

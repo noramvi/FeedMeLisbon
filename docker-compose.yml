@@ -6,10 +6,10 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: Noramviken123  # You should replace this with a secure password
+      MYSQL_ROOT_PASSWORD: geiksmysql299  # You should replace this with a secure password
       MYSQL_DATABASE: feedme
     volumes:
-    # - mysql_data:/var/lib/mysql
+    # - mysql_data:/var/lib/mysql  endre tilbake til dette for å lagre data mellom container-restart
     - ./backend/database:/docker-entrypoint-initdb.d
     ports:
       - "3307:3306"
@@ -25,9 +25,9 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: Noramviken123
+      DB_PASS: geiksmysql299
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - mysql
     networks:
@@ -42,9 +42,9 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: Noramviken123
+      DB_PASS: geiksmysql299
     ports:
-      - "3001:3001"
+      - "3004:3004"
     depends_on:
       - mysql
     networks:
@@ -59,7 +59,7 @@ services:
     environment:
       DB_HOST: mysql
       DB_USER: root
-      DB_PASS: Noramviken123
+      DB_PASS: geiksmysql299
     ports:
       - "3002:3002"
     depends_on:

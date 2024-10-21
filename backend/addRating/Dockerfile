@@ -23,4 +23,4 @@ EXPOSE 3001
 ENV DB_HOST=mysql DB_USER=root DB_PASS=password
 
 # Start application
-CMD ["node", "server.js"]  # Adjust according to your main server file
+CMD ["node", "server.js"]
