@@ -83,6 +83,27 @@ services:
     #environment:
       #- NODE_ENV=production
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Monterer konfigurasjonsfilen
+    ports:
+      - "9090:9090"  # Eksponer porten for web-grensesnittet til Prometheus
+    networks:
+      - app-network
+
+    # Grafana Service
+  grafana:
+    image: grafana/grafana
+    container_name: grafanaContainer
+    ports:
+      - "3007:3000"  # Bruker port 3007 på vertsmaskinen
+    networks:
+      - app-network
+    depends_on:
+      - prometheus
+
 # Define a shared network for the services to communicate
 networks:
   app-network:
