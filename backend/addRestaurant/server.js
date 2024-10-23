@@ -1,20 +1,25 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
-const restaurantRoutes = require('./routes/restaurantRoutes');
-const pool = require('./config/db'); 
+const displayRoutes = require('./routes/restaurantRoutes');
+const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = 3004;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Bruk restaurant-rutene
-app.use('/api', restaurantRoutes);
+// Routes
+app.use('/api', displayRoutes);
 
-// Start serveren
+// Serve frontend
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+// Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
