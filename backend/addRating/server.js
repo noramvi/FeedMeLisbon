@@ -3,7 +3,7 @@ const cors = require('cors');
 const displayRoutes = require('./routes/ratingRoutes');
 const path = require('path');
 const client = require('prom-client'); // Importer prom-client
-
+const metrics = require('./metrics');
 
 const app = express();
 const port = 3001;
@@ -22,25 +22,31 @@ app.get('/', (req, res) => {
 });
 
 // Opprett en registry for metrikker
-const register = new client.Registry();
+// const register = new client.Registry();
 
-// Legg til standard metrikker
-client.collectDefaultMetrics({
-  register: register,
-  labels: { job: 'addrating-service' } // Passer på at dette job-navnet matcher prometheus.yml
-});
+// register.registerMetric(metrics.httpRequestCount);
 
-// Lag en ny gauge-metrikk som du kan bruke i applikasjonen
-const exampleMetric = new client.Gauge({
-  name: 'example_metric',
-  help: 'This is an example metric',
-  registers: [register],
+// Middleware to track HTTP requests
+app.use((req, res, next) => {
+  if (req.path !== '/metrics') {
+    metrics.httpRequestCount.inc({ method: req.method, route: req.route ? req.route.path : req.path });
+    const end = metrics.httpRequestDurationSeconds.startTimer({ method: req.method, route: req.route ? req.route.path : req.path });
+    
+    res.on('finish', () => {
+      end({ status_code: res.statusCode });
+    });
+
+    if (res.statusCode >= 400) {
+      metrics.httpErrorCount.inc({ method: req.method, route: req.route ? req.route.path : req.path, status_code: res.statusCode });
+    }
+  }
+  next();
 });
 
 // Opprett en endpoint for metrikker
 app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', register.contentType);
-  res.end(await register.metrics());
+  res.set('Content-Type', metrics.register.contentType);
+  res.end(await metrics.register.metrics());
 });
 
 // Start the server
