@@ -12,6 +12,7 @@
   "dependencies": {
     "agisit24-g26": "file:",
     "express": "^4.21.1",
-    "livereload": "^0.9.3"
+    "livereload": "^0.9.3",
+    "prom-client": "^15.1.3"
   }
 }
