@@ -177,7 +177,7 @@ function closeModal() {
             const type = document.getElementById('restaurant-type').value;
 
             // Make a POST request to your backend to add the restaurant
-            fetch('http://localhost:3000/api/restaurants', {
+            fetch('http://localhost:3004/api/restaurants', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

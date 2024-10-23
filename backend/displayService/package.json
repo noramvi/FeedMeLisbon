@@ -12,7 +12,9 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "displayservice": "file:",
     "express": "^4.21.1",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "prom-client": "^15.1.3"
   }
 }
