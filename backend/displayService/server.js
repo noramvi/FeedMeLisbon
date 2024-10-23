@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const port = 3002;
 
-// Middleware
+// Middleware stuff
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
