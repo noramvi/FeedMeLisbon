@@ -6,10 +6,7 @@ WORKDIR /app
 
 # To copy package.json and package-lock.json
 COPY package*.json ./
-#COPY /addRatingserver.js ./
-#COPY /addRatingroutes/ratingRoutes.js ./routes/
-#COPY /addRatingcontrollers/ratingController.js ./controllers/
-#COPY /addRatingconfig/db.js ./config/
+
 
 # To install dependencies
 RUN npm install

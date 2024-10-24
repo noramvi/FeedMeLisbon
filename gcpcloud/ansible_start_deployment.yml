@@ -1,0 +1,79 @@
+---
+- hosts: master
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+
+    # Copy the first deployment YAML (addrestaurant-deployment.yaml)
+    - name: Copy add_restaurant.yaml to the master node
+      copy: 
+        src: add_restaurant.yaml
+        dest: /home/ubuntu/add_restaurant.yaml
+        mode: 0777
+
+    # Copy the second deployment YAML (addrating-deployment.yaml)
+    - name: Copy add_rating.yaml to the master node
+      copy: 
+        src: add_rating.yaml
+        dest: /home/ubuntu/add_rating.yaml
+        mode: 0777
+
+    # Copy the third deployment YAML (displayservice-deployment.yaml)
+    - name: Copy display_service.yaml to the master node
+      copy: 
+        src: display_service.yaml
+        dest: /home/ubuntu/display_service.yaml
+        mode: 0777
+
+
+    - name: Copy frontend.yaml to the master node
+      copy: 
+        src: frontend.yaml
+        dest: /home/ubuntu/frontend.yaml
+        mode: 0777
+
+    - name: Copy feedme_database.yaml to the master node
+      copy: 
+        src: feedme_database.yaml
+        dest: /home/ubuntu/feedme_database.yaml
+        mode: 0777
+
+    - name: Copy grafana.yaml to the master node
+      copy: 
+        src: grafana.yaml
+        dest: /home/ubuntu/grafana.yaml
+        mode: 0777
+
+    - name: Copy prometheus.yaml to the master node
+      copy: 
+        src: prometheus.yaml
+        dest: /home/ubuntu/prometheus.yaml
+        mode: 0777
+
+    # Apply the addrestaurant deployment
+    - name: Start addrestaurant deployment
+      shell: sudo kubectl apply -f /home/ubuntu/add_restaurant.yaml
+
+    # Apply the addrating deployment
+    - name: Start addrating deployment
+      shell: sudo kubectl apply -f /home/ubuntu/add_rating.yaml
+
+    # Apply the displayservice deployment
+    - name: Start displayservice deployment
+      shell: sudo kubectl apply -f /home/ubuntu/display_service.yaml
+
+    # Apply the MySQL deployment
+    - name: Start feedme_database deployment
+      shell: sudo kubectl apply -f /home/ubuntu/feedme_database.yaml
+
+    - name: Start prometheus deployment
+      shell: sudo kubectl apply -f /home/ubuntu/prometheus.yaml
+
+    # Apply the displayservice deployment
+    - name: Start frontend deployment
+      shell: sudo kubectl apply -f /home/ubuntu/frontend.yaml
+
+    # Apply the MySQL deployment
+    - name: Start grafana deployment
+      shell: sudo kubectl apply -f /home/ubuntu/grafana.yaml
