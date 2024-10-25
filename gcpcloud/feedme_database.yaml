@@ -25,13 +25,13 @@ spec:
         - name: MYSQL_DATABASE  # Optional: define an initial database to create
           value: "feedme_database"
         - name: MYSQL_USER  # Optional: define a user
-          value: "guest"
+          value: "feedme_user"
         - name: MYSQL_PASSWORD  # Optional: define the user's password
-          value: "guest123"
+          value: "feedmelisbon"
       #  volumeMounts:
       #  - name: mysql-storage
       #    mountPath: /var/lib/mysql  # MySQL data storage
-      #volumes:
+      volumes:
       
       #- name: mysql-storage
       #  persistentVolumeClaim:

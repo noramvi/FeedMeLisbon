@@ -6,17 +6,17 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: feedme
+      app: frontend
   template:
     metadata:
       labels:
-        app: feedme
+        app: frontend
     spec:
       containers:
       - name: frontendcontainer
-        image: europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/frontend:1 
+        image: europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/frontend:latest 
         ports:
-        - containerPort: 3003
+        - containerPort: 80
 ---
 
 apiVersion: v1
@@ -24,11 +24,12 @@ kind: Service
 metadata:
   name: frontend-service
   labels:
-    app: feedme
+    app: frontend
 spec:
   type: NodePort  # Change to LoadBalancer if you want external access
   selector:
-    app: feedme  # This should match the label in your deployment
+    app: frontend  # This should match the label in your deployment
   ports:
-    - port: 3003            # The port that will be exposed
-      targetPort: 3003
+    - port: 80            # The port that will be exposed
+      targetPort: 80
+      nodePort: 32000

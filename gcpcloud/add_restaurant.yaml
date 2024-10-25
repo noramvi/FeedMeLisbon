@@ -6,15 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: feedme
+      app: addrestaurant
   template:
     metadata:
       labels:
-        app: feedme
+        app: addrestaurant
     spec:
       containers:
-      - name: addrestaurantcontainer
-        image: europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrestaurant:1 
+      - name: addrestaurantcontainer 
+        image: europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrestaurant:latest
         ports:
         - containerPort: 3004
 ---
@@ -24,11 +24,12 @@ kind: Service
 metadata:
   name: addrestaurant-service
   labels:
-    app: feedme
+    app: addrestaurant
 spec:
-  type: NodePort  # Change to LoadBalancer if you want external access
+  type: ClusterIP  # Change to LoadBalancer if you want external access
   selector:
-    app: feedme  # This should match the label in your deployment
+    app: addrestaurant  # This should match the label in your deployment
   ports:
-    - port: 3004            # The port that will be exposed
+    - protocol: TCP
+      port: 3004            # The port that will be exposed
       targetPort: 3004      # The port on the container that will receive traffic
