@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addrestaurant-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: addrestaurant
+  template:
+    metadata:
+      labels:
+        app: addrestaurant
+    spec:
+      containers:
+      - name: addrestaurantcontainer 
+        image: europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrestaurant:latest
+        ports:
+        - containerPort: 3004
+        env:
+        - name: DB_HOST
+          value: "mysql"  # Change to your database service name if different
+        - name: DB_USER
+          value: "feedme_user"   # Your database username
+        - name: DB_PASSWORD
+          value: "feedmelisbon"  # Your database password
+        - name: DB_NAME
+          value: "feedme_database"  # Your database name
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: addrestaurant-service
+  labels:
+    app: addrestaurant
+spec:
+  type: ClusterIP  # Change to LoadBalancer if you want external access
+  selector:
+    app: addrestaurant  # This should match the label in your deployment
+  ports:
+    - protocol: TCP
+      port: 3004            # The port that will be exposed
+      targetPort: 3004      # The port on the container that will receive traffic

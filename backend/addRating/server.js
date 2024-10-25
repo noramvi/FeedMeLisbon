@@ -42,7 +42,6 @@ register.registerMetric(httpErrorCount);
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'frontend')));
 
 // Middleware for å spore HTTP-forespørslene
 app.use((req, res, next) => {
@@ -63,11 +62,6 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api', ratingRoutes);
-
-// Serve frontend
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
-});
 
 // Opprett en endpoint for metrikker
 app.get('/metrics', async (req, res) => {

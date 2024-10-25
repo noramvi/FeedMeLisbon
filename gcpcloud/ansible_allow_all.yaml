@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-internal-traffic
+  namespace: default  # Set this to the appropriate namespace
+spec:
+  podSelector: {}  # Apply to all pods
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector: {}  # Allow all incoming traffic from all pods
+  egress:
+    - to:
+        - podSelector: {}  # Allow all outgoing traffic to all pods

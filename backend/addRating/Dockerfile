@@ -6,10 +6,7 @@ WORKDIR /app
 
 # To copy package.json and package-lock.json
 COPY package*.json ./
-#COPY /addRatingserver.js ./
-#COPY /addRatingroutes/ratingRoutes.js ./routes/
-#COPY /addRatingcontrollers/ratingController.js ./controllers/
-#COPY /addRatingconfig/db.js ./config/
+
 
 # To install dependencies
 RUN npm install
@@ -20,7 +17,8 @@ COPY . .
 
 EXPOSE 3001
 
-ENV DB_HOST=mysql DB_USER=root DB_PASS=password
-
+ENV DB_HOST=mysql            
+ENV DB_USER=feedme_user       
+ENV DB_PASS=feedmelisbon 
 # Start application
 CMD ["node", "server.js"]
