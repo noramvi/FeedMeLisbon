@@ -48,12 +48,6 @@
         dest: /home/ubuntu/prometheus.yaml
         mode: 0777  
 
-    - name: Copy test_service.yaml to the master node
-      copy: 
-        src: test_service.yaml
-        dest: /home/ubuntu/test_service.yaml
-        mode: 0777
-
     - name: Start addrestaurant deployment
       shell: sudo kubectl apply -f /home/ubuntu/add_restaurant.yaml
 
@@ -75,8 +69,6 @@
     - name: Start grafana deployment
       shell: sudo kubectl apply -f /home/ubuntu/grafana.yaml
 
-    - name: Start test_service deployment
-      shell: sudo kubectl apply -f /home/ubuntu/test_service.yaml
 
 
 
