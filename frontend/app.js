@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="restaurant-card">
                     <h3>${restaurant.Name}</h3>
                     <div class="location-container">
-                        <img src="img/map_pin.jpg" class="location-image" alt="Map Pin">
+                        <img src="map_pin.jpg" class="location-image" alt="Map Pin">
                         <span>${restaurant.Location}</span>
                     </div>
                     <div class="rating-container">

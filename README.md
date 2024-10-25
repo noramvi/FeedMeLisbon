@@ -11,7 +11,7 @@ FeedMe Lisbon’s architecture is designed for cloud deployment, using Google Cl
 
 ## Architecture 
 
-![alt text](image.png)
+![Alt text](image.png)
 
 ##Prerequisites: 
 - You have a Google Cloud User with money charged on the account. 
