@@ -110,6 +110,8 @@ Enable Artifact Registry by searching for it in the google console and enable. C
 
 ## 11 Make artifact repository readable to public 
 
+Run this command in the vagrant terminal inside the gcloud folder to make the artifact repository readable to the public: 
+
 gcloud artifacts repositories add-iam-policy-binding feedmerepo \
     --location="<your-artifact-repo-region>" \
     --memeber="allUsers" \
