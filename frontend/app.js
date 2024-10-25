@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="restaurant-card">
                     <h3>${restaurant.Name}</h3>
                     <div class="location-container">
-                        <img src="img/map pin.png" class="location-image" alt="Map Pin">
+                        <img src="img/map_pin.jpg" class="location-image" alt="Map Pin">
                         <span>${restaurant.Location}</span>
                     </div>
                     <div class="rating-container">
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch average rating for a specific restaurant
     async function fetchAverageRating(restaurantName) {
         try {
-            const response = await fetch(`http://addrating-service.default.svc.cluster.local:3001/api/ratings/average/${restaurantName}`);
+            const response = await fetch(`/api/ratings/average/${restaurantName}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (ratingValue && !isNaN(ratingValue) && ratingValue >= 1 && ratingValue <= 10) {
             try {
-                const response = await fetch('http://addrating-service.default.svc.cluster.local:3001/api/ratings', {
+                const response = await fetch('api/ratings/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -81,9 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    
     // Fetch all restaurants when the "Show All Restaurants" button is clicked
     document.getElementById('all-btn').addEventListener('click', () => {
-        fetch('http://displayservice-service.default.svc.cluster.local:3002/api/restaurants')
+        fetch('api/all/')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch breakfast restaurants when the "Breakfast" button is clicked
     document.getElementById('breakfast-btn').addEventListener('click', () => {
-        fetch('http://displayservice-service.default.svc.cluster.local:3002/api/breakfast')
+        fetch('/api/breakfast/')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch lunch restaurants when the "Brunch" button is clicked
     document.getElementById('lunch-btn').addEventListener('click', () => {
-        fetch('http://displayservice-service.default.svc.cluster.local:3002/api/lunch')
+        fetch('/api/lunch/')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dinner restaurants when the "Dinner" button is clicked
     document.getElementById('dinner-btn').addEventListener('click', () => {
-        fetch('http://displayservice-service.default.svc.cluster.local:3002/api/dinner')
+        fetch('/api/dinner/')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dessert restaurants when the "Dessert" button is clicked
     document.getElementById('dessert-btn').addEventListener('click', () => {
-        fetch('http://displayservice-service.default.svc.cluster.local:3002/api/dessert')
+        fetch('/api/dessert/')
             .then(response => response.json())
             .then(data => {
                 displayRestaurants(data);
@@ -177,7 +178,7 @@ function closeModal() {
             const type = document.getElementById('restaurant-type').value;
 
             // Make a POST request to your backend to add the restaurant
-            fetch('http://addrestaurant-service.default.svc.cluster.local:3004/api/restaurants', {
+            fetch('api/restaurants/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -245,7 +246,7 @@ document.getElementById('rating-form').addEventListener('submit', async (event) 
     }
 
     try {
-        const response = await fetch('http://addrating-service.default.svc.cluster.local:3001/api/ratings', {
+        const response = await fetch('api/ratings/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -286,7 +287,7 @@ document.addEventListener('click', (event) => {
 
 // Function to fetch all restaurants (if you want to refresh the list)
 function fetchAllRestaurants() {
-    fetch('http://displayservice-service.default.svc.cluster.local:3002/api/restaurants')
+    fetch('/api/restaurants/')
         .then(response => response.json())
         .then(data => displayRestaurants(data))
         .catch(err => console.error('Error fetching all restaurants:', err));

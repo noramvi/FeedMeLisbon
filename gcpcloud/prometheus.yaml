@@ -14,17 +14,9 @@ data:
           static_configs:
             - targets: ['localhost:9090']  
 
-        - job_name: 'display-service'  # Gi et navn til jobben
+        - job_name: 'node-app'  # Gi et navn til jobben
           static_configs:
-            - targets: ['displayservice-service.default.svc.cluster.local:3002']  
-
-        - job_name: 'addrating-service'  # Gi et navn til jobben
-          static_configs:
-            - targets: ['addrating-service.default.svc.cluster.local:3001'] 
-
-        - job_name: 'addrestaurant-service'  # Gi et navn til jobben
-          static_configs:
-            - targets: ['addrestaurant-service.default.svc.cluster.local:3004']
+            - targets: ['displayservice-service.default.svc.cluster.local:3002', 'addrestaurant-service.default.svc.cluster.local:3004', 'addrating-service.default.svc.cluster.local:3001']  
 
 ---
 

@@ -17,7 +17,8 @@ COPY . .
 
 EXPOSE 3001
 
-ENV DB_HOST=mysql DB_USER=root DB_PASS=password
-
+ENV DB_HOST=mysql            
+ENV DB_USER=feedme_user       
+ENV DB_PASS=feedmelisbon 
 # Start application
 CMD ["node", "server.js"]
