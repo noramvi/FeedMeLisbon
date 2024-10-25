@@ -16,26 +16,21 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0  # Use the MySQL 8.0 official image
+        image: mysql:8.0  
         ports:
-        - containerPort: 3306  # MySQL runs on port 3306 inside the container
+        - containerPort: 3306  
         env:
-        - name: MYSQL_ROOT_PASSWORD  # Environment variable for the root password
+        - name: MYSQL_ROOT_PASSWORD  
           value: "Noramviken123"
-        - name: MYSQL_DATABASE  # Optional: define an initial database to create
+        - name: MYSQL_DATABASE 
           value: "feedme_database"
-        - name: MYSQL_USER  # Optional: define a user
+        - name: MYSQL_USER  
           value: "feedme_user"
-        - name: MYSQL_PASSWORD  # Optional: define the user's password
+        - name: MYSQL_PASSWORD  
           value: "feedmelisbon"
-      #  volumeMounts:
-      #  - name: mysql-storage
-      #    mountPath: /var/lib/mysql  # MySQL data storage
       volumes:
       
-      #- name: mysql-storage
-      #  persistentVolumeClaim:
-      #    claimName: mysql-pvc  # Reference to a PersistentVolumeClaim for persistent data
+      
 
 ---
 apiVersion: v1
@@ -47,7 +42,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi  # Request for 10Gi of storage
+      storage: 10Gi 
 
 ---
 apiVersion: v1
@@ -55,10 +50,10 @@ kind: Service
 metadata:
   name: mysql
 spec:
-  type: NodePort  # Expose the service using a NodePort
+  type: NodePort  
   selector:
     app: mysql
   ports:
-  - port: 3306  # The MySQL port inside the container
-    targetPort: 3306  # Map traffic from the container's port to the service port
-    nodePort: 30001  # Expose it externally on port 33007
+  - port: 3306 
+    targetPort: 3306  
+    nodePort: 30001 

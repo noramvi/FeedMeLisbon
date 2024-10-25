@@ -1,6 +1,5 @@
-const pool = require('../config/db'); // Anta at du har en db-fil for MySQL-tilkoblingen
+const pool = require('../config/db'); 
 
-// Get all restaurants
 const getAllRestaurants = async (req, res) => {
     try {
         const [results] = await pool.query('SELECT * FROM Restaurant');
@@ -22,7 +21,6 @@ const getBreakfastRestaurants = async (req, res) => {
     }
 };
 
-// Get lunch restaurants
 const getLunchRestaurants = async (req, res) => {
     try {
         const [results] = await pool.query('SELECT * FROM Restaurant WHERE Type = "Lunch"');
@@ -33,7 +31,6 @@ const getLunchRestaurants = async (req, res) => {
     }
 };
 
-// Get dinner restaurants
 const getDinnerRestaurants = async (req, res) => {
     try {
         const [results] = await pool.query('SELECT * FROM Restaurant WHERE Type = "Dinner"');
@@ -44,7 +41,6 @@ const getDinnerRestaurants = async (req, res) => {
     }
 };
 
-// Get dessert restaurants
 const getDessertRestaurants = async (req, res) => {
     try {
         const [results] = await pool.query('SELECT * FROM Restaurant WHERE Type = "Dessert"');

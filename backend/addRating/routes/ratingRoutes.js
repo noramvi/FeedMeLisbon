@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const ratingController = require('../controllers/ratingController');
 
-// Route for adding a new rating
 router.post('/ratings', async (req, res) => {
     const { restaurantName, ratingValue } = req.body;
 
@@ -14,7 +13,6 @@ router.post('/ratings', async (req, res) => {
     }
 });
 
-// Route for calculating average rating
 router.get('/ratings/average/:restaurantName', async (req, res) => {
     const restaurantName = req.params.restaurantName;
 

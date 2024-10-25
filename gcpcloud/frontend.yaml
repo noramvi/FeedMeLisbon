@@ -26,10 +26,10 @@ metadata:
   labels:
     app: frontend
 spec:
-  type: NodePort  # Change to LoadBalancer if you want external access
+  type: NodePort  
   selector:
-    app: frontend  # This should match the label in your deployment
+    app: frontend  
   ports:
-    - port: 80            # The port that will be exposed
+    - port: 80            
       targetPort: 80
       nodePort: 32000

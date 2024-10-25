@@ -1,94 +1,162 @@
 # agisit24-g26
+# Feed Me Lisbon
 
 Anna Svendsen
 Nora Mosand Viken
 
-## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+FeedMe Lisbon is a web application designed to help visitors and locals explore Lisbon’s dining options by category - whether for breakfast, lunch, dinner or dessert - and allowes them to view ratings, add new restaurants, and contribute their own ratings. Users can also add new restaurants to the application if a favorite spot is missing. 
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+FeedMe Lisbon’s architecture is designed for cloud deployment, using Google Cloud Platform (GCP) for infrastructure hosting. The application relies on a microservices structure, with each key feature - such as add restaurant, display restaurants and add rating - built as a separate service. Each service is containerized with Docker, and these containers run within a Kubernetes CLuster on the cloud. To ensure that Feed Me Lisbon is easily replicable, manageble and scalable,  we’ve implemented Infrastructure as Code (IaC). This approach uses scripting to automate the configuration of infrastructure components, reducing the risk of human error. This guide provides a clear, step-by-step approach for recreating the FeedMe Lisbon web application, utilizing powerful IaC tools, namely Terraform and Ansible.
 
-## Add your files
+## Architecture 
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+![alt text](image.png)
 
-```
-cd existing_repo
-git remote add origin https://gitlab.rnl.tecnico.ulisboa.pt/agisit/agisit24-g26.git
-git branch -M master
-git push -uf origin master
-```
+##Prerequisites: 
+- You have a Google Cloud User with money charged on the account. 
+- Docker is installed on your maskin.
 
-## Integrate with your tools
+Follow the instructions below to install and configure the entire system. 
 
-- [ ] [Set up project integrations](https://gitlab.rnl.tecnico.ulisboa.pt/agisit/agisit24-g26/-/settings/integrations)
+### 1 Vagrant Setup
+Navigate into the gcpgloud folder in the project repository and run 
 
-## Collaborate with your team
+    agisit24-g25/gcpgloud> vagrant up 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Access the VM with: 
 
-## Test and Deploy
+    agisit24-g25/gcpgloud> vagrant ssh
 
-Use the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### 2 Create a new project in Google Cloud and Enable Compute Engine API
+Log in to your user in Google Cloud Provider and click on the button that says "Create new project" and give the project a relevant name, for example "feedme-lisbon".
 
-***
+Inside the Google Cloud Console, choose "API and Services" and select "Enable APIs and Services". In the new window search for Compute Engine api. 
+Select the Compute ENgine api and enable. 
 
-# Editing this README
+### 3 Download a credentials file
+Still in the Google Cloud Console, navigate to the menu and elect IAM and Admin. Thereafter choose Service Accounts --> keys --> add key --> create new key and select the JSON checkbox in the the pop up. Then click on create, which will creates a Credentials file. Save this file in the gcpcloud folder
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### 4 Authorize the API 
+Navigate to gcpcloud in the vagrant environment and run the following command: 
+    vagrant@mgmt:∼/gcpcloud$ gcloud auth login
 
-## Suggestions for a good README
+Follow the instructions to authenticate yourself.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Build the infrastructure
+### 5 Initialize terraform 
+Navigate to the terraform_variables.tf file and locate the variable named "GCP_PROJECT_ID" and change the variable to the project id in Google Cloud. 
 
-## Name
-Choose a self-explaining name for your project.
+Now, Terraform can be initialized running the followoing command.Make sure the terminal is located inside the gcpcloud folder: 
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+    vagrant@mgmt:∼/gcpcloud$ gcloud auth login
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### 6 Generate public/private rsa key pair
+Run the following command: 
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+$ ssh-keygen -t rsa -b 2048
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+When asked to enter passworkd, just click enter. 
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Execute plan and build infrastructure
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Run the two following commands in order to apply the plan specified in the terraform files.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+    vagrant@mgmt:∼/gcpcloud$ terraform plan
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+    vagrant@mgmt:∼/gcpcloud$ terraform apply
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+After running this, the nodes/workers should be created and viewable in the Google Cloud.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### 8 Configure nodes with ansible
+Run the ansible playbook named ansible_configure_nodes.yml:
 
-## License
-For open source projects, say how it is licensed.
+    ansible-playbook ansible_configure_nodes.yml
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+### 9 Install Kubernetes on the nodes
+
+Run the ansible_kubernetes_install.yml playbook with the following command: 
+
+    ansible-playbook ansible_kubernetes_install.yml
+
+### 10 Set up the cluster
+
+run the ansible_create_cluster.yml playbook to create the kubernetes cluster: 
+
+    ansible-playbook ansible-create-cluster.yml
+
+To check if Kubernetes was correctly installed and to verify that the cluster was successfully created, navigate to Compute engine, click on the three vertical dots on the master VM and click on view gcloud command. Copy this and paste into terminal to ssh into the master node. Run 
+
+    sudo kubectl version 
+
+inside the master to verify that kubectl was correctly installed. 
+
+run the playbook named ansible_workers_join.yml to make the wokrers join the cluster.
+
+    ansible-playbook ansible_workers_join.yml
+
+run the following command inside master to output the cluster with all nodes: 
+
+    sudo kubectl get nodes
+
+
+## Start deployment of the Feed Me Lisbon application
+
+### Create Artifact Registry 
+Enable Artifact Registry by searching for it in the google console and enable. Create a new repository and name it "feedmerepo"
+
+## 11 Make artifact repository readable to public 
+
+gcloud artifacts repositories add-iam-policy-binding feedmerepo \
+    --location="<your-artifact-repo-region>" \
+    --memeber="allUsers" \
+    --role="roles/artifactregistry.reader" \
+
+### 12 Build docker images and push to cloud
+(As we had issues with infrastructure mis-match we had to use dockerx)
+
+Outside vagrant, navigate to the project. Now, four docker images should be built and pushed to cloud by running the two following commands for each of the microservices: 
+
+navigate to backend/addRestaurant and run: 
+
+    docker buildx build --platform linux/amd64 -t europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrestaurant:latest .
+
+    docker push europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrestaurant:latest
+
+navigate to backend/addRating and run: 
+
+    docker buildx build --platform linux/amd64 -t europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrating:latest .
+
+    docker push europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/addrating:latest
+
+navigate to backend/displayservice and run: 
+
+    docker buildx build --platform linux/amd64 -t europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/displayservice:latest .
+
+    docker push europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/displayservice:latest
+
+navigate to frontend/ and run: 
+
+    docker buildx build --platform linux/amd64 -t europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/frontend:latest .
+
+    docker push europe-west1-docker.pkg.dev/agisit-2425-website-26/feedmerepo/frontend:latest
+
+The images for Prometheus, Grafana and mysql are official images, and we therefore can simply build them directly without building the image first. See next step.
+
+### 13 Ansible start deployment
+Deployments, which manages a set of pods, and services are defined in yaml files for each microservice, including mysql database, promotheus and grafana, addrating, addrestaurant and displayservice. 
+
+By running the ansible_start_deployment.yml playbook, the yaml files containing the deployment configurations for the services get copied to the masternode, and are thereafter applied to the kubernetes cluster. 
+
+run the following commmand: 
+
+    ansible-playbook ansible_start_deployment.yml
+
+### 14 Access the web-site 
+
+Now the website should be accessible at the following url: 
+
+    http://<external IP of frontend worker node>:32000
