@@ -10,11 +10,11 @@ data:
       scrape_interval: 15s
 
     scrape_configs:
-        - job_name: 'prometheus'  # Gi et navn til jobben
+        - job_name: 'prometheus'  
           static_configs:
             - targets: ['localhost:9090']  
 
-        - job_name: 'node-app'  # Gi et navn til jobben
+        - job_name: 'node-app'  
           static_configs:
             - targets: ['displayservice-service.default.svc.cluster.local:3002', 'addrestaurant-service.default.svc.cluster.local:3004', 'addrating-service.default.svc.cluster.local:3001']  
 
@@ -57,9 +57,9 @@ metadata:
   labels:
     app: prometheus
 spec:
-  type: NodePort  # Exposes the service on a port of each Node in the cluster
+  type: NodePort  
   ports:
-  - port: 9090        # Port that the service will expose
-    targetPort: 9090  # Port that the container listens on
+  - port: 9090        
+    targetPort: 9090  
   selector:
     app: prometheus

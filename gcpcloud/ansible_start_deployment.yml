@@ -5,21 +5,18 @@
   become_method: sudo
   tasks:
 
-    # Copy the first deployment YAML (addrestaurant-deployment.yaml)
     - name: Copy add_restaurant.yaml to the master node
       copy: 
         src: add_restaurant.yaml
         dest: /home/ubuntu/add_restaurant.yaml
         mode: 0777
 
-    # Copy the second deployment YAML (addrating-deployment.yaml)
     - name: Copy add_rating.yaml to the master node
       copy: 
         src: add_rating.yaml
         dest: /home/ubuntu/add_rating.yaml
         mode: 0777
 
-    # Copy the third deployment YAML (displayservice-deployment.yaml)
     - name: Copy display_service.yaml to the master node
       copy: 
         src: display_service.yaml
@@ -57,34 +54,27 @@
         dest: /home/ubuntu/test_service.yaml
         mode: 0777
 
-    # Apply the addrestaurant deployment
     - name: Start addrestaurant deployment
       shell: sudo kubectl apply -f /home/ubuntu/add_restaurant.yaml
 
-    # Apply the addrating deployment
     - name: Start addrating deployment
       shell: sudo kubectl apply -f /home/ubuntu/add_rating.yaml
 
-    # Apply the displayservice deployment
     - name: Start displayservice deployment
       shell: sudo kubectl apply -f /home/ubuntu/display_service.yaml
 
-    # Apply the MySQL deployment
     - name: Start feedme_database deployment
       shell: sudo kubectl apply -f /home/ubuntu/feedme_database.yaml
 
     - name: Start prometheus deployment
       shell: sudo kubectl apply -f /home/ubuntu/prometheus.yaml
 
-    # Apply the displayservice deployment
     - name: Start frontend deployment
       shell: sudo kubectl apply -f /home/ubuntu/frontend.yaml
 
-    # Apply the MySQL deployment
     - name: Start grafana deployment
       shell: sudo kubectl apply -f /home/ubuntu/grafana.yaml
 
-    # Apply test_service
     - name: Start test_service deployment
       shell: sudo kubectl apply -f /home/ubuntu/test_service.yaml
 

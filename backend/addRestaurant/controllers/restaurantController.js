@@ -1,6 +1,5 @@
 const pool = require('../config/db'); 
 
-// Add a new restaurant
 const addNewRestaurant = async (req, res) => {
     const { Name, Location, Type } = req.body;
     try {

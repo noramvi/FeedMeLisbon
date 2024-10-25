@@ -19,13 +19,13 @@ spec:
         - containerPort: 3002
         env:
         - name: DB_HOST
-          value: "mysql"  # Change to your database service name if different
+          value: "mysql"  
         - name: DB_USER
-          value: "feedme_user"   # Your database username
+          value: "feedme_user"  
         - name: DB_PASSWORD
-          value: "feedmelisbon"  # Your database password
+          value: "feedmelisbon" 
         - name: DB_NAME
-          value: "feedme_database"  # Your database name
+          value: "feedme_database"  
 ---
 
 apiVersion: v1
@@ -35,10 +35,10 @@ metadata:
   labels:
     app: displayservice
 spec:
-  type: ClusterIP  # Change to LoadBalancer if you want external access
+  type: ClusterIP  
   selector:
-    app: displayservice  # This should match the label in your deployment
+    app: displayservice  
   ports:
     - protocol: TCP  
-      port: 3002            # The port that will be exposed
+      port: 3002            
       targetPort: 3002

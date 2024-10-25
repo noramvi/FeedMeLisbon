@@ -1,4 +1,3 @@
-# This method creates as many identical instances as the "count" index value
 resource "google_compute_instance" "worker" {
     count = 3
     name = "worker${count.index+1}"
